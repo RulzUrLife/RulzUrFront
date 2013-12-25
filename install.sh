@@ -14,7 +14,9 @@ docker_run () {
 repository_initialization () {
   sudo apt-get install -y node-js
   sudo npm install -g grunt-cli
+  sudo npm install -g bower
   npm install
+  bower install
 }
 
 main () {
