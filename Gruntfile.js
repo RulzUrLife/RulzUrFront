@@ -6,4 +6,10 @@ module.exports = function (grunt) {
    the package.json file is parsed and each task matching grunt-* is loaded.
   */
   require('load-grunt-tasks')(grunt);
+  grunt.initConfig({
+    app: {
+      name: "RulzUrFront",
+      path: "app"
+    }
+  });
 };
