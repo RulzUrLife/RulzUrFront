@@ -21,20 +21,6 @@ module.exports = function (grunt) {
         '<%= app.dev %>/scripts/{,*/}*.js'
       ]
     },
-    useminPrepare: {
-      html: '<%= app.dev %>/index.html',
-      options: {
-        dest: '<%= app.dist %>'
-      }
-    },
-    copy: {
-      styles: {
-        expand: true,
-        cwd: '<%= app.dev %>/styles',
-        dest: '.tmp/styles/',
-        src: '{,*/}*.css'
-      }
-    },
     clean: {
       dist: {
         files: [{
@@ -46,13 +32,49 @@ module.exports = function (grunt) {
         }]
       }
     },
+    copy: {
+      styles: {
+        expand: true,
+        cwd: '<%= app.dev %>/styles',
+        dest: '.tmp/styles/',
+        src: '{,*/}*.css'
+      }
+    },
+    useminPrepare: {
+      html: '<%= app.dev %>/index.html',
+      options: {
+        dest: '<%= app.dist %>'
+      }
+    },
     usemin: {
       html: ['<%= app.dist %>/{,*/}*.html'],
       css: ['<%= app.dist %>/styles/{,*/}*.css'],
       options: {
         dirs: ['<%= app.dist %>']
       }
+    },
+    htmlmin: {
+      dist: {
+        options: {
+          removeCommentsFromCDATA: true,
+          // https://github.com/yeoman/grunt-usemin/issues/44
+          //collapseWhitespace: true,
+          collapseBooleanAttributes: true,
+          removeAttributeQuotes: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeOptionalTags: true
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= app.dev %>',
+          src: ['*.html'],
+          dest: '<%= app.dist %>'
+        }]
+      }
     }
+
   });
 
   grunt.registerTask('default', [
@@ -63,6 +85,8 @@ module.exports = function (grunt) {
     'concat',
     'cssmin',
     'uglify',
+    'htmlmin',
     'usemin'
+
   ]);
 };
