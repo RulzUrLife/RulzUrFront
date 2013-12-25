@@ -8,8 +8,20 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
   grunt.initConfig({
     app: {
-      name: "RulzUrFront",
-      path: "app"
+      name: 'RulzUrFront',
+      path: 'app'
+    },
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc'
+      },
+      all: [
+        'Gruntfile.js',
+        '<%= app.path %>/scripts/{,*/}*.js'
+      ]
     }
   });
+  grunt.registerTask('default', [
+    'jshint'
+  ]);
 };
