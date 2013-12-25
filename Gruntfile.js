@@ -9,7 +9,8 @@ module.exports = function (grunt) {
   grunt.initConfig({
     app: {
       name: 'RulzUrFront',
-      path: 'app'
+      dev: 'app',
+      dist: 'dist'
     },
     jshint: {
       options: {
@@ -17,11 +18,51 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= app.path %>/scripts/{,*/}*.js'
+        '<%= app.dev %>/scripts/{,*/}*.js'
       ]
+    },
+    useminPrepare: {
+      html: '<%= app.dev %>/index.html',
+      options: {
+        dest: '<%= app.dist %>'
+      }
+    },
+    copy: {
+      styles: {
+        expand: true,
+        cwd: '<%= app.dev %>/styles',
+        dest: '.tmp/styles/',
+        src: '{,*/}*.css'
+      }
+    },
+    clean: {
+      dist: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%= app.dist %>/*'
+          ]
+        }]
+      }
+    },
+    usemin: {
+      html: ['<%= app.dist %>/{,*/}*.html'],
+      css: ['<%= app.dist %>/styles/{,*/}*.css'],
+      options: {
+        dirs: ['<%= app.dist %>']
+      }
     }
   });
+
   grunt.registerTask('default', [
-    'jshint'
+    'jshint',
+    'clean:dist',
+    'useminPrepare',
+    'copy:styles',
+    'concat',
+    'cssmin',
+    'uglify',
+    'usemin'
   ]);
 };
