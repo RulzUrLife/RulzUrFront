@@ -72,6 +72,17 @@ module.exports = function (grunt) {
           src: ['*.html'],
           dest: '<%= app.dist %>'
         }]
+      },
+      whitespace: {
+        options: {
+          collapseWhitespace: true
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= app.dist %>',
+          src: '{,*/}*.html',
+          dest: '<%= app.dist %>'
+        }]
       }
     }
 
@@ -85,8 +96,8 @@ module.exports = function (grunt) {
     'concat',
     'cssmin',
     'uglify',
-    'htmlmin',
-    'usemin'
-
+    'htmlmin:dist',
+    'usemin',
+    'htmlmin:whitespace'
   ]);
 };
