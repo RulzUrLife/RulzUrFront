@@ -21,6 +21,18 @@ module.exports = function (grunt) {
         '<%= app.dev %>/scripts/{,*/}*.js'
       ]
     },
+    connect: {
+      options: {
+        port: 9000,
+        hostname: '0.0.0.0',
+        livereload: 35729
+      },
+      dist: {
+        options: {
+          base: '<%= app.dist %>'
+        }
+      }
+    },
     clean: {
       dist: {
         files: [{
@@ -53,12 +65,15 @@ module.exports = function (grunt) {
         dirs: ['<%= app.dist %>']
       }
     },
+    htmlrefs: {
+      dist: {
+        src: '<%= app.dist %>/index.html'
+      }
+    },
     htmlmin: {
       dist: {
         options: {
           removeCommentsFromCDATA: true,
-          // https://github.com/yeoman/grunt-usemin/issues/44
-          //collapseWhitespace: true,
           collapseBooleanAttributes: true,
           removeAttributeQuotes: true,
           removeRedundantAttributes: true,
@@ -75,6 +90,7 @@ module.exports = function (grunt) {
       },
       whitespace: {
         options: {
+          // https://github.com/yeoman/grunt-usemin/issues/44
           collapseWhitespace: true
         },
         files: [{
@@ -97,7 +113,12 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'htmlmin:dist',
+    'htmlrefs',
     'usemin',
     'htmlmin:whitespace'
   ]);
+
+  grunt.registerTask('server', function () {
+    return grunt.task.run(['default', 'connect:dist:keepalive']);
+  });
 };
