@@ -45,6 +45,17 @@ module.exports = function (grunt) {
       }
     },
     copy: {
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= app.dev %>',
+          dest: '<%= app.dist %>',
+          src: [
+            'bower_components/**/*'
+          ]
+        }]
+      },
       styles: {
         expand: true,
         cwd: '<%= app.dev %>/styles',
@@ -109,6 +120,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'useminPrepare',
     'copy:styles',
+    'copy:dist',
     'concat',
     'cssmin',
     'uglify',
