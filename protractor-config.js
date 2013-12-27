@@ -1,5 +1,12 @@
 // A reference configuration file.
+
+// Add a jasmine reporter in order to help jenkins
+require('jasmine-reporters');
+jasmine.getEnv().addReporter(new jasmine.JUnitXmlReporter(
+    'test/report/', true, true));
+
 exports.config = {
+
   // The address of a running selenium server.
   seleniumAddress: 'http://localhost:9515',
 
@@ -18,7 +25,7 @@ exports.config = {
   // and
   // https://code.google.com/p/selenium/source/browse/javascript/webdriver/capabilities.js
   capabilities: {
-    'browserName': 'phantomjs',    
+    'browserName': 'phantomjs',
   },
 
   // A base URL for your application under test. Calls to protractor.get()
