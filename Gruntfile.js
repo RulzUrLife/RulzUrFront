@@ -47,7 +47,16 @@ module.exports = function (grunt) {
     phantom: {
       options: {
         port: 9515
-      }
+      },
+      test: {}
+    },
+    protractor: {
+      options: {
+        configFile: "protractor-config.js", // Default config file
+        keepAlive: true, // If false, the grunt process stops when the test fails.
+        noColor: false // If true, protractor will not use colors in its output.
+      },
+      test: {}
     },
     imagemin: {
       dist: {
@@ -279,5 +288,9 @@ module.exports = function (grunt) {
     'jshint',
     //'test',
     'build'
+  ]);
+  grunt.registerTask('test', [
+    'phantom',
+    'protractor'
   ]);
 };

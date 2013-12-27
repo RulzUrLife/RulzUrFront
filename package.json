@@ -24,7 +24,8 @@
     "grunt-concurrent": "~0.4.2",
     "time-grunt": "~0.2.5",
     "protractor": "~0.15.0",
-    "grunt-phantom": "~0.2.0"
+    "grunt-phantom": "~0.2.0",
+    "grunt-protractor-runner": "~0.2.0"
   },
   "engines": {
     "node": ">=0.8.0"
