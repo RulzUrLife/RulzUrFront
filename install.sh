@@ -12,6 +12,9 @@ docker_run () {
 }
 
 repository_initialization () {
+  cd "$TOP_DIR"
+  sudo apt-get update
+
   # Nodejs clean install
   sudo apt-get install -y python-software-properties
   sudo add-apt-repository -y ppa:chris-lea/node.js
@@ -26,6 +29,11 @@ repository_initialization () {
 
   # Compass installation
   sudo gem update --system && sudo gem install compass
+
+  # PhantomJS installation and protractor fix
+  sudo apt-get install -y libfontconfig1 fontconfig libfontconfig1-dev libfreetype6-dev
+  sudo npm install -g phantomjs
+  cp "test/utils/protractor.js" "node_modules/protractor/lib/protractor.js"
 }
 
 main () {

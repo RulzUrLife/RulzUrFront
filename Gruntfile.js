@@ -44,6 +44,11 @@ module.exports = function (grunt) {
         ]
       }
     },
+    phantom: {
+      options: {
+        port: 9515
+      }
+    },
     imagemin: {
       dist: {
         files: [{
