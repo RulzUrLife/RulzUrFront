@@ -4,11 +4,11 @@ PROJECT="RulzUrFront"
 TOP_DIR=$(cd $(dirname "$0") && pwd)
 
 docker_create () {
-  docker build -t="front" -rm=true .
+  grunt && docker build -t="RulzUrFront" -rm=true .
 }
 
 docker_run () {
-  docker run -d -p 80 front
+  docker run -d -p 80 RulzUrFront
 }
 
 repository_initialization () {
