@@ -45,18 +45,18 @@ module.exports = function (grunt) {
       }
     },
     phantom: {
-      options: {
-        port: 9515
-      },
-      test: {}
+      test: {
+        options: {
+          port: 9515
+        }
+      }
     },
     protractor: {
-      options: {
-        configFile: "protractor-config.js", // Default config file
+      test: {
+        configFile: 'protractor-config.js', // Default config file
         keepAlive: true, // If false, the grunt process stops when the test fails.
         noColor: false // If true, protractor will not use colors in its output.
-      },
-      test: {}
+      }
     },
     imagemin: {
       dist: {
@@ -97,6 +97,16 @@ module.exports = function (grunt) {
         options: {
           base: '<%= app.dist %>'
         }
+      },
+      test: {
+        options: {
+          port: 9001,
+          base: [
+            '.tmp',
+            'test',
+            '<%= app.dev %>'
+          ]
+        }
       }
     },
     clean: {
@@ -131,7 +141,6 @@ module.exports = function (grunt) {
           dest: '<%= app.dist %>',
           src: [
             '*.{ico,png,txt}',
-            'bower_components/**/*',
             'images/{,*/}*.{gif,webp}',
             'styles/fonts/*'
           ]
@@ -171,7 +180,6 @@ module.exports = function (grunt) {
         imagesDir: '<%= app.dev %>/images',
         javascriptsDir: '<%= app.dev %>/scripts',
         fontsDir: '<%= app.dev %>/styles/fonts',
-        importPath: '<%= app.dev %>/bower_components',
         httpImagesPath: '/images',
         httpGeneratedImagesPath: '/images/generated',
         httpFontsPath: '/styles/fonts',
@@ -236,6 +244,10 @@ module.exports = function (grunt) {
         'compass:server',
         'copy:styles'
       ],
+      test: [
+        'compass',
+        'copy:styles'
+      ],
       dist: [
         'compass:dist',
         'copy:styles',
@@ -269,6 +281,15 @@ module.exports = function (grunt) {
     ]);
   });
 
+  grunt.registerTask('test', [
+    'clean:server',
+    'concurrent:test',
+    'autoprefixer',
+    'connect:test',
+    'phantom',
+    'protractor'
+  ]);
+
   grunt.registerTask('build', [
     'clean:dist',
     'useminPrepare',
@@ -286,11 +307,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'jshint',
-    //'test',
+    'test',
     'build'
-  ]);
-  grunt.registerTask('test', [
-    'phantom',
-    'protractor'
   ]);
 };
