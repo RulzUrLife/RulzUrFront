@@ -4,11 +4,16 @@ PROJECT="RulzUrFront"
 TOP_DIR=$(cd $(dirname "$0") && pwd)
 
 docker_create () {
-  grunt && docker build -t="RulzUrFront" -rm=true .
+  grunt && docker build -t="$PROJECT" -rm=true .
 }
 
 docker_run () {
-  docker run -d -p 80 RulzUrFront
+  docker run -d -p 80 "$PROJECT"
+}
+
+docker_clean () {
+  docker stop $(docker ps -a -q)
+  docker rm $(docker ps -a -q)
 }
 
 repository_initialization () {
@@ -37,7 +42,25 @@ repository_initialization () {
 }
 
 main () {
-  repository_initialization
+  [[ -z "$1" ]] && repository_initialization && return
+
+  case "$1" in
+  "init")
+    repository_initialization
+    ;;
+  "docker_create")
+    docker_create
+    ;;
+  "docker_run")
+    docker_run
+    ;;
+  "docker_clean")
+    docker_clean
+    ;;
+  *)
+    echo "Command not found"
+    ;;
+  esac
 }
 
-main
+main "$@"
