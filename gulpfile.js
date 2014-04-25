@@ -1,7 +1,6 @@
 'use strict';
 
 var gulp = require('gulp'),
-  // load plugins
   $ = require('gulp-load-plugins')();
 
 gulp.task('styles', function () {
@@ -17,9 +16,10 @@ gulp.task('styles', function () {
 gulp.task('scripts', function () {
   return gulp.src([
       'app/scripts/**/*.js',
+      'test/**/*.js',
       'gulpfile.js',
       'protractor.conf.js',
-      'test/**/*.js'
+      'karma.conf.js'
     ])
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
@@ -105,7 +105,7 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('serve', ['connect', 'watch'], function () {
+gulp.task('serve', ['connect', 'styles', 'watch'], function () {
   gulp.watch(['app/**/*', '.tmp/**/*'], function (event) {
     if (event.type === 'changed') {
       gulp.src(event.path).pipe($.connect.reload());
@@ -115,8 +115,7 @@ gulp.task('serve', ['connect', 'watch'], function () {
 
 gulp.task('webdriver_update', $.protractor.webdriver_update);
 
-
-gulp.task('test:e2e', ['webdriver_update'], function () {
+gulp.task('test:e2e', ['webdriver_update', 'build'], function () {
   gulp.src(['test/e2e/**/*.spec.js'])
     .pipe($.protractor.protractor({
       configFile: 'protractor.conf.js',
@@ -124,3 +123,16 @@ gulp.task('test:e2e', ['webdriver_update'], function () {
     }))
     .on('error', function (e) { throw e; });
 });
+
+gulp.task('test:unit', function () {
+  gulp.src([
+    'app/bower_components/angular/angular.js',
+    'app/bower_components/angular-route/angular-route.js',
+    'app/bower_components/angular-mocks/angular-mocks.js',
+    'app/scripts/main.js',
+    'app/scripts/**/*.js',
+    'test/unit/**/*.spec.js'
+  ]).pipe($.karma({configFile: 'karma.conf.js'}));
+});
+
+gulp.task('test', ['test:e2e', 'test:unit']);
