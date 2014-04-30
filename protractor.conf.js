@@ -3,12 +3,11 @@
 
 exports.config = {
   // The address of a running selenium server.
-  seleniumServerJar:
-    './node_modules/protractor/selenium/selenium-server-standalone-2.41.0.jar',
+  seleniumAddress: 'http://localhost:9515',
 
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'phantomjs'
   },
 
   framework: 'jasmine',
@@ -31,5 +30,4 @@ exports.config = {
     showColors: true,
     defaultTimeoutInterval: 30000
   }
-
 };

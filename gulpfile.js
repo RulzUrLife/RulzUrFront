@@ -29,22 +29,22 @@ gulp.task('jshint', function () {
 
 gulp.task('build', ['sass', 'jshint', 'images', 'fonts', 'wiredep'],
   function () {
-  var jsFilter = $.filter('**/*.js'),
-    cssFilter = $.filter('**/*.css');
+    var jsFilter = $.filter('**/*.js'),
+      cssFilter = $.filter('**/*.css');
 
-  return gulp.src(paths.dev + '/**/*.html')
-    .pipe($.useref.assets())
-    .pipe(jsFilter)
-    .pipe($.uglify())
-    .pipe(jsFilter.restore())
-    .pipe(cssFilter)
-    .pipe($.minifyCss())
-    .pipe(cssFilter.restore())
-    .pipe($.useref.restore())
-    .pipe($.useref())
-    .pipe(gulp.dest(paths.dist))
-    .pipe($.size());
-});
+    return gulp.src(paths.dev + '/**/*.html')
+      .pipe($.useref.assets())
+      .pipe(jsFilter)
+      .pipe($.uglify())
+      .pipe(jsFilter.restore())
+      .pipe(cssFilter)
+      .pipe($.minifyCss())
+      .pipe(cssFilter.restore())
+      .pipe($.useref.restore())
+      .pipe($.useref())
+      .pipe(gulp.dest(paths.dist))
+      .pipe($.size());
+  });
 
 gulp.task('images', function () {
   return gulp.src(paths.dev + paths.images + '/**/*')
@@ -105,15 +105,26 @@ gulp.task('serve', ['connect', 'sass', 'watch', 'wiredep'], function () {
   });
 });
 
-gulp.task('webdriver_update', $.protractor.webdriver_update);
+gulp.task('test:e2e', ['build'], function (cb) {
+  var child = require('child_process').execFile(
+    require('phantomjs').path,
+    ['--webdriver=9515']
+  );
 
-gulp.task('test:e2e', ['webdriver_update', 'build'], function () {
-  return gulp.src([paths.test_e2e + '/**/*.spec.js'])
-    .pipe($.protractor.protractor({
-      configFile: paths.protractor_conf,
-      args: ['--baseUrl', 'http://127.0.0.1:8000']
-    }))
-    .on('error', function (e) { throw e; });
+  child.stdout.on('data', function (chunk) {
+    if (chunk.indexOf('GhostDriver') > -1 && chunk.indexOf('running') > -1) {
+      gulp.src([paths.test_e2e + '/**/*.spec.js'])
+        .pipe($.protractor.protractor({
+          configFile: paths.protractor_conf,
+          args: ['--baseUrl', 'http://127.0.0.1:8000']
+        }))
+        .on('error', function (e) { cb(e); })
+        .on('end', function () {
+          child.kill();
+          cb();
+        });
+    }
+  });
 });
 
 gulp.task('test:unit', function () {
