@@ -2,7 +2,8 @@
 
 var gulp = require('gulp'),
   $ = require('gulp-load-plugins')(),
-  paths = require('./conf').paths;
+  paths = require('./conf').paths,
+  wiredep = require('wiredep').stream;
 
 gulp.task('sass', function () {
   return gulp.src(paths.sass)
@@ -73,21 +74,23 @@ gulp.task('connect', function () {
 });
 
 // inject bower components
-gulp.task('wiredep', function () {
-  var wiredep = require('wiredep').stream;
-
-  gulp.src(paths.sass)
+gulp.task('wiredep:sass', function () {
+  return gulp.src(paths.sass)
     .pipe(wiredep({
       directory: paths.bower_components
     }))
     .pipe(gulp.dest(paths.dev + paths.styles));
+});
 
-  gulp.src(paths.dev + '/*.html')
+gulp.task('wiredep:html', function () {
+  return gulp.src(paths.dev + '/*.html')
     .pipe(wiredep({
       directory: paths.bower_components
     }))
     .pipe(gulp.dest(paths.dev));
 });
+
+gulp.task('wiredep', ['wiredep:html', 'wiredep:sass']);
 
 gulp.task('watch', function () {
   gulp.watch(paths.dev + paths.styles + '/**/*.scss', ['sass']);
@@ -141,7 +144,6 @@ gulp.task('test:unit', function () {
 });
 
 gulp.task('test', ['test:unit', 'test:e2e']);
-
 
 gulp.task('clean', function () {
   return gulp.src([paths.tmp, paths.dist], { read: false }).pipe($.clean());
