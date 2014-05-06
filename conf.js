@@ -1,10 +1,8 @@
 var fs = require('fs');
 
 var paths = {
-  dist: 'dist',
+  build: 'build',
   dev: 'app',
-  tmp: '.tmp',
-  styles: '/styles',
   images: '/images',
   scripts: '/scripts',
   fonts: '/fonts',
@@ -20,8 +18,6 @@ paths.html = [
   paths.dev + '/404.html',
   paths.dev + '/views/**/*.html'
 ];
-
-paths.sass = paths.dev + paths.styles + '/main.scss';
 
 module.exports = {
   paths: paths

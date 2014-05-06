@@ -21,7 +21,7 @@ exports.config = {
     var connect = require('connect');
 
     connect()
-      .use(connect.static('dist'))
+      .use(connect.static('build'))
       .listen(8000);
   },
 
