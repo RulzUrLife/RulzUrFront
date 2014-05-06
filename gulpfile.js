@@ -5,16 +5,6 @@ var gulp = require('gulp'),
   paths = require('./conf').paths,
   wiredep = require('wiredep').stream;
 
-gulp.task('sass', function () {
-  return gulp.src(paths.sass)
-    .pipe($.sass())
-    .pipe($.autoprefixer('last 2 version', 'ios 6', 'android 4'))
-    .pipe($.csslint('csslintrc.json'))
-    .pipe($.csslint.reporter())
-    .pipe(gulp.dest(paths.tmp + paths.styles))
-    .pipe($.size());
-});
-
 gulp.task('jshint', function () {
   return gulp.src([
       paths.dev + paths.scripts + '/**/*.js',
@@ -28,27 +18,43 @@ gulp.task('jshint', function () {
     .pipe($.jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('build', ['sass', 'jshint', 'images', 'fonts', 'wiredep'],
+gulp.task('build', ['jshint', 'images', 'fonts'],
   function () {
     var jsFilter = $.filter('**/*.js'),
-      cssFilter = $.filter('**/*.css');
+    indexFilter = $.filter('index.html');
 
     return gulp.src(paths.dev + '/**/*.html')
+      .pipe(indexFilter)
+      .pipe(wiredep({
+        directory: paths.bower_components,
+        overrides: {
+          angular: {
+            main: 'angular.min.js'
+          },
+          'angular-route': {
+            main: 'angular-route.min.js'
+          },
+          'dessert': {
+            main: [
+              'dessert.min.css',
+              'fonts/**/*.{eot,svg,ttf,woff}'
+            ]
+          }
+        }
+      }))
       .pipe($.useref.assets())
       .pipe(jsFilter)
       .pipe($.uglify())
       .pipe(jsFilter.restore())
-      .pipe(cssFilter)
-      .pipe($.minifyCss())
-      .pipe(cssFilter.restore())
       .pipe($.useref.restore())
       .pipe($.useref())
+      .pipe(indexFilter.restore())
       .pipe(gulp.dest(paths.dist))
       .pipe($.size());
   });
 
 gulp.task('images', function () {
-  return gulp.src(paths.dev + paths.images + '/**/*')
+  return gulp.src(paths.dev + paths.images + '/**')
     .pipe($.cache($.imagemin({
       optimizationLevel: 3,
       progressive: true,
@@ -61,47 +67,36 @@ gulp.task('images', function () {
 gulp.task('fonts', function () {
   return $.bowerFiles()
     .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
-    .pipe($.flatten())
-    .pipe(gulp.dest(paths.dist + paths.fonts))
+    .pipe($.rename(function (path) {
+      path.dirname = path.dirname.slice(path.dirname.indexOf('/') + 1);
+    }))
+    .pipe(gulp.dest(paths.dist + '/styles'))
     .pipe($.size());
 });
 
 gulp.task('connect', function () {
   return $.connect.server({
-    root: [ paths.dev, paths.tmp],
+    root: [paths.tmp, paths.dev],
     livereload: true
   });
 });
 
 // inject bower components
-gulp.task('wiredep:sass', function () {
-  return gulp.src(paths.sass)
-    .pipe(wiredep({
-      directory: paths.bower_components
-    }))
-    .pipe(gulp.dest(paths.dev + paths.styles));
-});
-
-gulp.task('wiredep:html', function () {
+gulp.task('wiredep', function () {
   return gulp.src(paths.dev + '/*.html')
-    .pipe(wiredep({
-      directory: paths.bower_components
-    }))
-    .pipe(gulp.dest(paths.dev));
+    .pipe(wiredep({directory: paths.bower_components}))
+    .pipe(gulp.dest(paths.tmp));
 });
-
-gulp.task('wiredep', ['wiredep:html', 'wiredep:sass']);
 
 gulp.task('watch', function () {
-  gulp.watch(paths.dev + paths.styles + '/**/*.scss', ['sass']);
   gulp.watch(paths.dev + paths.scripts +  '/**/*.js', ['jshint']);
-  gulp.watch(paths.dev + paths.images + '/**/*', ['images']);
+  gulp.watch(paths.dev + paths.images + '/**', ['images']);
   gulp.watch('bower.json', ['wiredep']);
 });
 
 
-gulp.task('serve', ['connect', 'sass', 'watch', 'wiredep'], function () {
-  gulp.watch([paths.dev + '/**/*', paths.tmp + '/**/*'], function (event) {
+gulp.task('serve', ['connect', 'watch', 'wiredep'], function () {
+  gulp.watch([paths.dev + '/**/*', paths.tmp + '/**'], function (event) {
     if (event.type === 'changed') {
       gulp.src(event.path).pipe($.connect.reload());
     }
