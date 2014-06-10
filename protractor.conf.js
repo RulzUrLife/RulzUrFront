@@ -16,13 +16,6 @@ exports.config = {
     require('jasmine-reporters');
     jasmine.getEnv().addReporter(
       new jasmine.JUnitXmlReporter('test/report/', true, true));
-
-    //starts an http server for testing the frontend
-    var connect = require('connect');
-
-    connect()
-      .use(connect.static('build'))
-      .listen(8000);
   },
 
   // Options to be passed to Jasmine-node.
