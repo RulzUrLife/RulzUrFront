@@ -7,6 +7,10 @@ angular.module('RulzUrFront', ['ngRoute'])
         templateUrl: 'views/index.html',
         controller: 'indexCtrl'
       })
+      .when('/new_recipe', {
+        templateUrl: 'views/new_recipe.html',
+        controller: 'newRecipeCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
