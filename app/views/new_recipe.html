@@ -1,1 +1,37 @@
-<h2>New Recipe</h2>
+<h2>Nouvelle recette</h2>
+
+<div class="col3of4">
+  <div class="section col1of1">
+    <div class="col1of1 section-header" style="border: 1px solid #4d4d4d">Nom: <div class="right">x</div> </div>
+    <div class="col1of1 section-body" style="border: 1px solid #4d4d4d">
+      <div class="duration">
+        <label for="duration">Durée:</label>
+        <span id="duration">
+          <label for="preparation">Préparation:</label>
+          <input id="preparation"/>
+          <label for="cook">Cuisson:</label>
+          <input id="cook"/>
+          <label for="rest">Repos:</label>
+          <input id="rest"/>
+        </span>
+        <label for="ingredients">Ingrédients:</label>
+        <div id="ingredients">
+          <input placeholder="quantité"/><input placeholder="nom de l'ingrédient"><button>-</button>
+          <div><button>Add</button></div>
+        </div>
+        <div style="border-bottom: 1px solid #4d4d4d"></div>
+        <div class="steps">
+          Étapes:
+          <div class="step">
+            <textarea class="col1of1" rows="10"></textarea>
+          </div>
+          <button class="col1of1 add-step">Ajouter une étape</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="col1of1">Ajouter une section</button>
+</div>
+<div class="col1of4">
+  Aide
+</div>
