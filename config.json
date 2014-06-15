@@ -1,0 +1,54 @@
+{
+  "connect": {
+    "port"     : 8000,
+    "test_port": 8888
+  },
+  "dev": {
+    "html"   : "app/**/*.html",
+    "images" : "app/images/**/*",
+    "path"   : "app",
+    "scripts": "app/scripts/**/*.js",
+    "others" : ["app/favicon.ico", "app/robots.txt"]
+  },
+  "dist": {
+    "fonts"  : "dist/styles/**/*.{eot,svg,ttf,woff}",
+    "images" : "dist/images",
+    "path"   : "dist",
+    "scripts": "dist/scripts/**/*.js",
+    "styles" : "dist/styles",
+    "html"   : "dist/**/*.html"
+  },
+  "test": {
+    "e2e" : "test/e2e/**/*.spec.js",
+    "path": "test",
+    "unit": "test/unit/**/*.spec.js"
+  },
+  "tmp": {
+    "fonts"  : ".tmp/styles/**/*.{eot,svg,ttf,woff}",
+    "images" : ".tmp/images",
+    "path"   : ".tmp",
+    "scripts": ".tmp/scripts/**/*.js",
+    "styles" : ".tmp/styles",
+    "html"   : ".tmp/**/*.html"
+  },
+  "karma_conf"       : "karma.conf.js",
+  "gulpfile"         : "gulpfile.js",
+  "protractor_conf"  : "protractor.conf.js",
+  "bower_components" : "app/bower_components",
+  "wiredep"          : {
+    "dist": {
+      "directory": "app/bower_components",
+      "overrides": {
+        "angular"           : {"main": "angular.min.js"},
+        "angular-route"     : {"main": "angular-route.min.js"},
+        "angular-bootstrap" : {"main": "ui-bootstrap.min.js"},
+        "dessert"           : {"main": [
+          "dessert.min.css",
+          "fonts/**/*.{eot,svg,ttf,woff}"
+        ]}
+      }
+
+    },
+    "dev": {"directory": "app/bower_components"}
+  }
+}
