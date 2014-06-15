@@ -42,7 +42,6 @@ gulp.task('useref', function () {
     .pipe(gulp.dest(dest.path));
 });
 
-
 gulp.task('images', function () {
   return gulp.src(config.dev.images)
     .pipe($.cache($.imagemin({
@@ -63,7 +62,6 @@ gulp.task('fonts', function () {
       }))
     .pipe(gulp.dest(dest.styles));
 });
-
 
 function connect(root, livereload, port) {
   return $.connect.server({
@@ -87,15 +85,20 @@ gulp.task('reloadScripts', ['useref'], function () {
 });
 
 gulp.task('reloadImages', ['images'], function () {
-  gulp.src(dest.images + '/**')
+  return gulp.src(dest.images + '/**')
+    .pipe($.connect.reload());
+});
+
+gulp.task('reloadHtml', ['useref'], function () {
+  return gulp.src(dest.html)
     .pipe($.connect.reload());
 });
 
 gulp.task('watch', function () {
+  gulp.watch(config.dev.html, ['reloadHtml']);
   gulp.watch(config.dev.scripts, ['reloadScripts']);
   gulp.watch(config.dev.images, ['reloadImages']);
 });
-
 
 gulp.task('test:e2e', ['build', 'connect:test'], function (cb) {
   var child = require('child_process').execFile(
@@ -136,7 +139,6 @@ gulp.task('test:unit', function () {
   return gulp.src(wiredep.js)
     .pipe($.karma({configFile: config.karma_conf}));
 });
-
 
 gulp.task('clean', function () {
   rimraf.sync(config.tmp.path);

@@ -15,7 +15,8 @@
     "images" : "dist/images",
     "path"   : "dist",
     "scripts": "dist/scripts/**/*.js",
-    "styles" : "dist/styles"
+    "styles" : "dist/styles",
+    "html"   : "dist/**/*.html"
   },
   "test": {
     "e2e" : "test/e2e/**/*.spec.js",
@@ -27,7 +28,8 @@
     "images" : ".tmp/images",
     "path"   : ".tmp",
     "scripts": ".tmp/scripts/**/*.js",
-    "styles" : ".tmp/styles"
+    "styles" : ".tmp/styles",
+    "html"   : ".tmp/**/*.html"
   },
   "karma_conf"       : "karma.conf.js",
   "gulpfile"         : "gulpfile.js",
@@ -37,9 +39,10 @@
     "dist": {
       "directory": "app/bower_components",
       "overrides": {
-        "angular"      : {"main": "angular.min.js"},
-        "angular-route": {"main": "angular-route.min.js"},
-        "dessert"      : {"main": [
+        "angular"           : {"main": "angular.min.js"},
+        "angular-route"     : {"main": "angular-route.min.js"},
+        "angular-bootstrap" : {"main": "ui-bootstrap.min.js"},
+        "dessert"           : {"main": [
           "dessert.min.css",
           "fonts/**/*.{eot,svg,ttf,woff}"
         ]}
