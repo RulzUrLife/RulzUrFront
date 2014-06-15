@@ -49,6 +49,13 @@
       }
 
     },
-    "dev": {"directory": "app/bower_components"}
+    "dev": {
+      "directory": "app/bower_components",
+      "overrides": {
+        "angular-bootstrap": {
+          "main": "ui-bootstrap.js"
+        }
+      }
+    }
   }
 }
