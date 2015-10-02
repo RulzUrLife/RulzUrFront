@@ -1,0 +1,61 @@
+.container {
+  width: 1170px;
+  margin: auto;
+  padding: 20px
+}
+
+.recipe h1 {
+  text-align: center;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: black;
+  padding: 20px;
+}
+
+.recipe-desc {
+  text-align: center;
+}
+
+.recipe-metadata {
+  margin: 30px 0;
+}
+
+.recipe-metadata div {
+  width: 33%;
+  float: left;
+}
+
+.two-columns ul {
+  list-style-type: none;
+}
+
+.two-columns ul li{
+  padding: 10px 0;
+  border-width: 0 0 1px 0;
+  border-style: dotted;
+  border-color: black;
+}
+
+.two-columns .left ul {
+  padding: 10px 20px 10px 0;
+}
+
+.two-columns .right ul {
+  padding: 10px 0 10px 20px;
+}
+
+.left {
+  float: left;
+  width: 50%;
+}
+
+.right {
+  float: right;
+  width: 50%;
+}
+
+.direction {
+  text-align: justify;
+  padding: 20px 0;
+}
+
