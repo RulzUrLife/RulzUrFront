@@ -5,8 +5,12 @@
   "devDependencies": {
     "del": "^2.0.2",
     "gulp": "~3.9.0",
+    "gulp-concat": "^2.6.0",
     "gulp-sass": "^2.0.4",
-    "gulp-sequence": "^0.4.1"
+    "gulp-sequence": "^0.4.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "merge2": "^0.3.6",
+    "normalize.css": "^3.0.3",
   },
   "engines": {
     "node": ">=0.8.0"
