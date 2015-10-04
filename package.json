@@ -10,9 +10,12 @@
     "gulp-sequence": "^0.4.1",
     "gulp-sourcemaps": "^1.6.0",
     "merge2": "^0.3.6",
-    "normalize.css": "^3.0.3",
+    "normalize.css": "^3.0.3"
   },
   "engines": {
     "node": ">=0.8.0"
+  },
+  "scripts": {
+    "test": "gulp test"
   }
 }

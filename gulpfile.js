@@ -36,5 +36,9 @@ gulp.task('clean', function () {
   return del(['dist/**/*']);
 });
 
+gulp.task('test', function () {
+  // do nothing...
+});
+
 gulp.task('build', sequence('clean', ['styles', 'scripts']));
 
